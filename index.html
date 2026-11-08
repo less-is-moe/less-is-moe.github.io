@@ -3,88 +3,70 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Less is MoE: Trimming Experts in Domain-Specialist Language Models">
-  <title>Less is MoE</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      --background: #fff;
-      --foreground: #1d1d1f;
-      --muted: #66666d;
-      --line: #e8e8ec;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --background: #161618;
-        --foreground: #f5f5f7;
-        --muted: #aaaab2;
-        --line: #303034;
-      }
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--background);
-      color: var(--foreground);
-      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    header {
-      height: 64px;
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      align-items: center;
-      padding: 0 clamp(20px, 5vw, 72px);
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    main {
-      min-height: calc(100vh - 64px);
-      display: grid;
-      place-items: center;
-      padding: 48px 24px 96px;
-    }
-
-    .hero {
-      width: min(980px, 100%);
-      text-align: center;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(42px, 7vw, 84px);
-      line-height: 1.04;
-      letter-spacing: -0.055em;
-      text-wrap: balance;
-    }
-
-    p {
-      max-width: 800px;
-      margin: 32px auto 0;
-      color: var(--muted);
-      font-size: clamp(17px, 2vw, 22px);
-      line-height: 1.8;
-      text-wrap: balance;
-    }
-
-    .equal-note {
-      display: block;
-      margin-top: 8px;
-      font-size: 0.75em;
-    }
-  </style>
+  <meta name="description" content="Fisher-MoE prunes FFN intermediate dimensions while keeping every expert. Explore the Less is MoE paper, EMNLP 2026 poster, results, and code.">
+  <meta name="theme-color" content="#f7f7f2">
+  <meta property="og:title" content="Less is MoE | EMNLP 2026">
+  <meta property="og:description" content="Trimming Experts in Domain-Specialist Language Models. Keep every expert. Trim the dimensions.">
+  <meta property="og:image" content="https://less-is-moe.github.io/assets/poster-preview.png">
+  <meta property="og:url" content="https://less-is-moe.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://less-is-moe.github.io/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+  <title>Less is MoE | EMNLP 2026</title>
 </head>
 <body>
-  <header>Less is MoE</header>
-  <main>
-    <section class="hero">
-      <h1>Less is MoE: Trimming Experts in Domain-Specialist Language Models</h1>
-      <p>Haoze He*, Xinkai Zou*, Xuan Jiang, Xingyuan Ding,<br>Ao Qu, Juncheng Billy Li, Heather Miller<span class="equal-note">* Equal contribution</span></p>
-    </section>
-  </main>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><nav class="nav wrap" aria-label="Main navigation">
+  <a href="#" class="wordmark"><img class="brand-icon" src="assets/favicon.svg" width="30" height="30" alt=""> Less is MoE<span class="nav-year"> / 2026</span></a>
+  <div class="nav-links"><a href="#method">Method</a><a href="#results">Results</a><a href="#resources">Resources</a><a class="nav-code" href="https://github.com/HectorHHZ/Less-is-MoE">Code <span aria-hidden="true">↗</span></a></div>
+</nav></header>
+<main id="main">
+<section class="hero wrap" aria-labelledby="title">
+  <div class="eyebrow"><span class="status-dot"></span> EMNLP 2026 <span class="eyebrow-rule"></span> MAIN CONFERENCE</div>
+  <h1 id="title">Less is <em>MoE.</em></h1>
+  <p class="subtitle">Trimming Experts in<br>Domain-Specialist Language Models</p>
+  <div class="authors"><span>Haoze He<sup>1,*</sup></span><span>Xinkai Zou<sup>2,*</sup></span><span>Xuan Jiang<sup>3</sup></span><span>Xingyuan Ding<sup>1</sup></span><span>Ao Qu<sup>3</sup></span><span>Juncheng Billy Li<sup>1</sup></span><span>Heather Miller<sup>1</sup></span></div>
+  <p class="affiliations"><span><sup>1</sup> Carnegie Mellon University</span><span><sup>2</sup> UC San Diego</span><span><sup>3</sup> MIT</span></p>
+  <p class="equal">* Equal contribution</p>
+  <div class="actions"><a class="button primary" href="https://arxiv.org/abs/2606.05538">Read the paper <span aria-hidden="true">↗</span></a><a class="button" href="https://github.com/HectorHHZ/Less-is-MoE">Explore the code <span aria-hidden="true">↗</span></a><a class="button" href="assets/less-is-moe-poster.pdf">View poster <span aria-hidden="true">↗</span></a></div>
+  <div class="hero-note"><span class="small-label">THE IDEA</span><p>Keep every expert.<br><strong>Trim the dimensions.</strong></p><div class="hero-note-copy">Fisher importance identifies the FFN dimensions that matter for a task. Fisher-MoE removes low-importance dimensions inside each expert.</div><a href="#method" class="circle-link" aria-label="Explore the method">↓</a></div>
+</section>
+<section class="metric-band" aria-label="Key results"><div class="wrap metrics">
+  <div><span class="metric">50<span>%</span></span><h2>MoE compression</h2><p>Half of the routed-expert FFN parameters</p></div>
+  <div><span class="metric">43.4<span>% ↓</span></span><h2>Less model VRAM</h2><p>26.67 → 15.09 GiB</p></div>
+  <div><span class="metric">21<span>% ↑</span></span><h2>Higher throughput</h2><p>7,336 → 8,909 tokens / second</p></div>
+  <p class="metric-note">Deployment measurements: Qwen1.5-MoE-A2.7B on one NVIDIA H100. Values reported in the revised poster.</p>
+</div></section>
+<section class="section wrap" id="overview"><div class="section-heading"><span class="kicker">01 / THE FINDING</span><h2>Small dimensions.<br>Large consequences.</h2><p>Capabilities are distributed across experts, but can depend on a very small set of FFN intermediate dimensions.</p></div>
+<div class="finding-layout"><div class="finding-copy"><div class="large-fraction">12 <span>/ 2.03M</span></div><p class="fraction-caption">Just <strong>0.0006%</strong> of the routed-FFN dimensions.</p><p>Masking 12 high-importance dimensions drops GSM8K accuracy from <strong>35.9% to 0.8%</strong>. A small change can remove a large part of a model’s capability.</p><p class="note">Qwen1.5-MoE. Dimension count and measurements follow the revised EMNLP 2026 poster.</p></div><figure class="capability-figure"><img src="assets/capability.png" width="1580" height="416" alt="Three brain illustrations show a task-critical region, its removal, and the resulting capability loss." loading="lazy"><div class="figure-steps"><span><b>01</b> Locate</span><span><b>02</b> Remove</span><span><b>03</b> Capability drops</span></div><figcaption>A small set of dimensions can be critical to a task.</figcaption></figure></div>
+<div class="chart-panel"><div class="panel-heading"><h3>What happens when 12 dimensions are masked?</h3><div class="legend"><span><i class="base"></i>Base model</span><span><i class="accent"></i>Mask top 12</span></div></div><div id="mask-chart" class="mask-chart" aria-label="Accuracy after masking the top 12 dimensions"></div><p class="note">Accuracy (%) after masking the top 12 dimensions, as reported in the poster.</p></div>
+<div class="overlap"><div><h3>Related tasks retain similar dimensions.</h3><p>Retained-dimension overlap is higher within the same domain than in the cross-domain example.</p></div><dl><div><dt>Math <small>GSM8K / MATH</small></dt><dd>65.3%</dd></div><div><dt>Code <small>HE / MBPP</small></dt><dd>66.5%</dd></div><div><dt>Chinese <small>CEval / CMMLU</small></dt><dd>69.6%</dd></div><div><dt>Cross-domain <small>CMMLU / MBPP</small></dt><dd>53.6%</dd></div></dl></div>
+</section>
+<section class="method-section" id="method"><div class="wrap section"><div class="section-heading"><span class="kicker">02 / THE METHOD</span><h2>Go inside the expert.</h2><p>Fisher-MoE changes the unit of compression: from whole experts to intermediate dimensions in their feed-forward networks.</p></div>
+<div class="method-layout"><figure class="method-figure"><img src="assets/pruning.png" width="1460" height="620" loading="lazy" alt="An expert feed-forward network before and after pruning. High-importance dimensions remain; low-importance dimensions are removed."><figcaption>Keep every expert. Remove low-importance FFN dimensions.</figcaption></figure><ol class="method-steps"><li><span>01</span><div><h3>Measure importance</h3><p>Use calibration loss gradients from the gate, up, and down projections to score each FFN dimension.</p></div></li><li><span>02</span><div><h3>Prune within experts</h3><p>Keep high-importance dimensions. Allocate the pruning budget per expert (E), per layer (L), or globally (G).</p></div></li><li><span>03</span><div><h3>Adapt the runtime</h3><p>Detect the MoE layout and select the vLLM adapter and GPU kernels for the compressed model.</p></div></li></ol></div>
+<details class="formula-details"><summary>View the Fisher importance formulation <span aria-hidden="true">+</span></summary><img src="assets/fisher-formula.png" width="1354" height="572" loading="lazy" alt="Fisher importance averages the sum of squared gate, up, and down weight gradients across hidden coordinates. The indices are expert i, FFN dimension j, and hidden coordinate k."><p>The figure gives the paper’s formulation. See the <a href="https://github.com/HectorHHZ/Less-is-MoE#what-is-included">release protocol notes</a> for implementation details.</p></details>
+</div></section>
+<section class="section wrap" id="results"><div class="section-heading"><span class="kicker">03 / THE EVIDENCE</span><h2>Less model.<br>More capability retained.</h2><p>Fisher-MoE leads the pruning baselines shown in the poster across knowledge, code, math, and reasoning at 25%, 50%, and 75% pruning.</p></div>
+<div class="results-top"><h3>Accuracy across pruning ratios</h3><div class="segmented" role="group" aria-label="Pruning ratio"><button type="button" data-ratio="0" aria-pressed="false">25%</button><button type="button" data-ratio="1" aria-pressed="true">50%</button><button type="button" data-ratio="2" aria-pressed="false">75%</button></div></div>
+<div id="ratio-cards" class="ratio-cards" aria-live="polite"></div><p class="note">Fisher-IntDim-E · Qwen1.5-MoE · Accuracy (%) · E denotes allocation per expert. These values are separate from the global (G) results below.</p>
+<div class="table-header"><div><h3>Compare methods at 50% compression</h3><p>All compressed methods remove half of the routed-expert FFN parameters.</p></div><label class="model-label" for="model-select">Model<select id="model-select"><option value="qwen15">Qwen1.5-MoE-A2.7B</option><option value="qwen3">Qwen3-30B-A3B</option></select></label></div>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Benchmark comparison. Scroll horizontally to see all columns."><table id="results-table"></table></div><p class="note">Accuracy (%). HE: HumanEval. MA: MultiArith. GPQA-D: GPQA-Diamond. Bold values mark the best compressed result in each column. The base model is uncompressed.</p>
+<div class="result-takeaway"><span aria-hidden="true">↗</span><p id="result-takeaway" aria-live="polite"></p></div>
+<noscript><p>Enable JavaScript for the interactive results, or <a href="assets/less-is-moe-poster.pdf">read all results in the poster</a>.</p></noscript>
+</section>
+<section class="deployment-section"><div class="wrap section deployment-grid"><div><span class="kicker">04 / FROM PRUNING TO DEPLOYMENT</span><h2>A smaller model.<br>A practical runtime.</h2><p>The project connects structural pruning with model loading, evaluation, and vLLM deployment.</p><a class="button primary" href="https://github.com/HectorHHZ/Less-is-MoE">Get started on GitHub <span aria-hidden="true">↗</span></a></div><div class="deployment-list"><article><span>01</span><div><h3>Automatic kernel adaptation</h3><p>The poster reports automatic MoE layout detection and vLLM adapter and GPU kernel selection (v0.29.0).</p></div></article><article><span>02</span><div><h3>Recovery with fine-tuning</h3><p>Domain fine-tuning recovers accuracy close to the uncompressed Base + SFT models with half the FFN parameters.</p></div></article><article><span>03</span><div><h3>Compression plus quantization</h3><p>Structural pruning can be combined with 4-bit quantization to further reduce the model footprint.</p></div></article></div></div></section>
+<section class="section wrap resources" id="resources"><div class="resource-copy"><span class="kicker">05 / EXPLORE THE WORK</span><h2>Paper. Code. Poster.</h2><p>Read the full study, run Fisher-MoE, or take a closer look at the conference poster.</p><div class="resource-links"><a href="https://arxiv.org/abs/2606.05538"><span><small>01 / PAPER</small>Read on arXiv</span><span aria-hidden="true">↗</span></a><a href="https://github.com/HectorHHZ/Less-is-MoE"><span><small>02 / IMPLEMENTATION</small>Explore Fisher-MoE</span><span aria-hidden="true">↗</span></a><a href="assets/less-is-moe-poster.pdf" download><span><small>03 / POSTER</small>Download the poster</span><span aria-hidden="true">↓</span></a></div></div><a class="poster-preview" href="assets/less-is-moe-poster.pdf" aria-label="Open the EMNLP 2026 poster PDF"><img src="assets/poster-preview.png" width="1312" height="1854" alt="Full Less is MoE EMNLP 2026 conference poster" loading="lazy"><span>EMNLP 2026 · Revised poster <span aria-hidden="true">↗</span></span></a></section>
+<section class="citation wrap" id="citation"><div class="citation-heading"><h2>Cite this work</h2><button id="copy-citation" type="button">Copy BibTeX <span aria-hidden="true">⧉</span></button></div><pre><code id="bibtex">@article{he2026lessismoe,
+  title = {Less is {MoE}: Trimming Experts in Domain-Specialist Language Models},
+  author = {He, Haoze and Zou, Xinkai and Jiang, Xuan and Ding, Xingyuan
+            and Qu, Ao and Li, Juncheng Billy and Miller, Heather},
+  journal = {arXiv preprint arXiv:2606.05538},
+  year = {2026},
+  url = {https://arxiv.org/abs/2606.05538}
+}</code></pre><p id="copy-status" role="status"></p></section>
+</main>
+<footer class="wrap"><a class="wordmark" href="#">Less is MoE.</a><p>Carnegie Mellon University · UC San Diego · MIT</p><a href="#">Back to top ↑</a></footer>
 </body>
 </html>
