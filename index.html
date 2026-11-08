@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Fisher-MoE prunes FFN intermediate dimensions while keeping every expert. Explore the Less is MoE paper, EMNLP 2026 poster, results, and code.">
-  <meta name="theme-color" content="#f7f7f2">
+  <meta name="theme-color" content="#4e95d9">
   <meta property="og:title" content="Less is MoE | EMNLP 2026">
   <meta property="og:description" content="Trimming Experts in Domain-Specialist Language Models. Keep every expert. Trim the dimensions.">
   <meta property="og:image" content="https://less-is-moe.github.io/assets/poster-preview.png">
@@ -12,8 +12,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://less-is-moe.github.io/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script src="script.js?v=2" defer></script>
   <title>Less is MoE | EMNLP 2026</title>
 </head>
 <body>
@@ -23,16 +23,23 @@
   <div class="nav-links"><a href="#method">Method</a><a href="#results">Results</a><a href="#resources">Resources</a><a class="nav-code" href="https://github.com/HectorHHZ/Less-is-MoE">Code <span aria-hidden="true">↗</span></a></div>
 </nav></header>
 <main id="main">
+<div class="hero-band">
 <section class="hero wrap" aria-labelledby="title">
   <div class="eyebrow"><span class="status-dot"></span> EMNLP 2026 <span class="eyebrow-rule"></span> MAIN CONFERENCE</div>
   <h1 id="title">Less is <em>MoE.</em></h1>
   <p class="subtitle">Trimming Experts in<br>Domain-Specialist Language Models</p>
-  <div class="authors"><span>Haoze He<sup>1,*</sup></span><span>Xinkai Zou<sup>2,*</sup></span><span>Xuan Jiang<sup>3</sup></span><span>Xingyuan Ding<sup>1</sup></span><span>Ao Qu<sup>3</sup></span><span>Juncheng Billy Li<sup>1</sup></span><span>Heather Miller<sup>1</sup></span></div>
+  <div class="authors"><span><a href="https://hectorhhz.github.io/" target="_blank" rel="noopener noreferrer">Haoze He</a><sup>1,*</sup></span><span><a href="https://jayzou3773.github.io/" target="_blank" rel="noopener noreferrer">Xinkai Zou</a><sup>2,*</sup></span><span><a href="https://xuan-1998.github.io/" target="_blank" rel="noopener noreferrer">Xuan Jiang</a><sup>3</sup></span><span>Xingyuan Ding<sup>1</sup></span><span><a href="https://quao627.github.io/" target="_blank" rel="noopener noreferrer">Ao Qu</a><sup>3</sup></span><span><a href="https://www.junchengbillyli.com/" target="_blank" rel="noopener noreferrer">Juncheng Billy Li</a><sup>1</sup></span><span><a href="https://www.heather.miller.am/" target="_blank" rel="noopener noreferrer">Heather Miller</a><sup>1</sup></span></div>
   <p class="affiliations"><span><sup>1</sup> Carnegie Mellon University</span><span><sup>2</sup> UC San Diego</span><span><sup>3</sup> MIT</span></p>
   <p class="equal">* Equal contribution</p>
+  <div class="institution-logos" aria-label="Author affiliations">
+    <a href="https://www.cmu.edu/" target="_blank" rel="noopener noreferrer" aria-label="Carnegie Mellon University"><img class="cmu-logo" src="assets/cmu-logo.png" width="117" height="117" alt="Carnegie Mellon University"></a>
+    <a href="https://ucsd.edu/" target="_blank" rel="noopener noreferrer" aria-label="University of California San Diego"><img class="ucsd-logo" src="assets/ucsd-logo.png" width="335" height="62" alt="UC San Diego"></a>
+    <a href="https://www.mit.edu/" target="_blank" rel="noopener noreferrer" aria-label="Massachusetts Institute of Technology"><img class="mit-logo" src="assets/mit-logo.png" width="164" height="86" alt="MIT"></a>
+  </div>
   <div class="actions"><a class="button primary" href="https://arxiv.org/abs/2606.05538">Read the paper <span aria-hidden="true">↗</span></a><a class="button" href="https://github.com/HectorHHZ/Less-is-MoE">Explore the code <span aria-hidden="true">↗</span></a><a class="button" href="assets/less-is-moe-poster.pdf">View poster <span aria-hidden="true">↗</span></a></div>
   <div class="hero-note"><span class="small-label">THE IDEA</span><p>Keep every expert.<br><strong>Trim the dimensions.</strong></p><div class="hero-note-copy">Fisher importance identifies the FFN dimensions that matter for a task. Fisher-MoE removes low-importance dimensions inside each expert.</div><a href="#method" class="circle-link" aria-label="Explore the method">↓</a></div>
 </section>
+</div>
 <section class="metric-band" aria-label="Key results"><div class="wrap metrics">
   <div><span class="metric">50<span>%</span></span><h2>MoE compression</h2><p>Half of the routed-expert FFN parameters</p></div>
   <div><span class="metric">43.4<span>% ↓</span></span><h2>Less model VRAM</h2><p>26.67 → 15.09 GiB</p></div>
